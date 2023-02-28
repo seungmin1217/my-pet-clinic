@@ -1,0 +1,21 @@
+기존의 pet-clinic에서는 
+객체 연관관계에서, '일'인 owner에 외래키와 연관된 List<Pet> pets가 있다
+그러므로, 여기서는 '다대일'이 아닌 '일대다' 관계를 취하고 있다
+정확히는, 일대다 단방향 매핑이다. ( pets에는 owner과 관련된 변수가 없다. )
+
+외래키 관련 값이 '일'에 있는 일대다 관계는 실무에서는 거의 쓰이지 않는다
+그 이유는 실제 테이블에서는 항상 '다'에 외래키가 있다
+하지만 객체에서 '일'에 외래키와 관련된 값을 유지할 때 '객체'와 '테이블'의 구조가 달라진다
+ -> 엔티티가 관리하는 외래키가 다른테이블에 있다는 것 자체가 단점
+-> 만약 새로운 pet추가 후, 방금 추가된 새로운 pet을 가지는 새로운 owner가 추가된다면,
+insert sql 2개 이후에
+연관관계 관리를 위한 추가적인 update sql이 필요하다 : 
+pets 테이블에 새로 추가된 pet이 가지는 foreign key인 owner 정보가 새로이 update 되어야만 함
+
+hibernate 설정을 추가해서 추가적인 update쿼리 확인해보기
+
+in-memory h2의 테이블을 확인하는 방법? : 
+resources/db/h2/schema.sql 확인하기
+http://localhost:8080/h2-console/에서 jdbc:h2:mem:testdb 접속하기
+
+테이블의 index 정리하기
